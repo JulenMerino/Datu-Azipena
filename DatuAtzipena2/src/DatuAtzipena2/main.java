@@ -1,11 +1,33 @@
 package DatuAtzipena2;
 
+/*	
+ * 	PUNTOS POSITIVOS:
+ * 		- Funtzionamendua ondo, exception batzuk kontrolatu behar dira.
+ * 		- Menu-aren while-a oso ondo ulertzen da, metodoak jarrita kasu bakoitzeko.
+ * 		- Metodoak ondo, javadoc iruzkinduak eta ulergarriak.
+ * 	PUNTOS A MEJORAR:
+ * 		- Main metodoan langileen informazioa dago jarrita, hori klasean egongo behar luke.
+ * 		- Langileekin erlazionaturik dauden metodoak, langile klasean egon behar dute.
+ * 		- Ez da beharrezkoa klase gehiagorik, baino ulergarria izateko menu-ko aukeraketak adibidez beste klase baten.
+ * 
+ * 	NOTA:
+ * 		- Funtzionamendua 		7/10
+ * 		- Kode txukuntasuna		5/10
+ * 		- Klaseak				5/10
+ * 		- Iruzkinak				8/10
+ * 		- TOTALA				6.25					
+ *  */
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
+
+/*
+ * 
+ */
 
 public class main {
 	

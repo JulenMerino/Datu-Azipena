@@ -1,4 +1,8 @@
 package DatuAtzipena3;
+//Funtzionamendu aldetik, dena ondo, eskatzen ziren eskakizun guztiak betetzen dira, gerta daitezkeen erroreak kontrolatuz
+
+//Kode aldetik, metodoak beste klase batean egotea hobeto egongo litzateke, menu.java-n menua bakarrik utziz. Betsela, iruzkinak lagungarriak dira.
+
 
 import java.io.File;
 import java.io.FileWriter;
