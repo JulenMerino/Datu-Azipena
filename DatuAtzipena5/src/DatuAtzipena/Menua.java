@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Scanner;
 
 /**
- * Menua kudeatzeko klasea. Erabiltzaileari aukera ezberdinak eskaintzen dizkio
+ * Menuaren kudeatzailea. Erabiltzaileari aukera ezberdinak eskaintzen dizkio
  * fitxategiarekin hainbat eragiketa egiteko.
  */
 public class Menua {
