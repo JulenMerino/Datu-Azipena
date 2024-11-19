@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<erregistroak>
+    
+  <erregistroa id="1">
+        
+    <izena>Nancy</izena>
+        
+    <abizena>Davolio</abizena>
+        
+    <kargua>Representante de ventas</kargua>
+        
+    <tratua>Stra.</tratua>
+        
+    <jaiotzeData>1968-12-08</jaiotzeData>
+        
+    <kontratuData>1992-05-01</kontratuData>
+        
+    <helbidea>507-20th Ave.E.</helbidea>
+        
+    <hiria>Seattle</hiria>
+      
+  </erregistroa>
+    
+  <erregistroa id="2">
+        
+    <izena>Andrew</izena>
+        
+    <abizena>Fuller</abizena>
+        
+    <kargua>Vicepresidente comercial</kargua>
+        
+    <tratua>Dr.</tratua>
+        
+    <jaiotzeData>1952-02-19</jaiotzeData>
+        
+    <kontratuData>1992-08-14</kontratuData>
+        
+    <helbidea>908 W. Capital Way</helbidea>
+        
+    <hiria>Tacoma</hiria>
+      
+  </erregistroa>
+    
+  <erregistroa id="3">
+        
+    <izena>Janet</izena>
+        
+    <abizena>Leverling</abizena>
+        
+    <kargua>Representante de ventas</kargua>
+        
+    <tratua>Stra.</tratua>
+        
+    <jaiotzeData>1963-08-30</jaiotzeData>
+        
+    <kontratuData>1992-04-01</kontratuData>
+        
+    <helbidea>722 Moss Bay Blvd.</helbidea>
+        
+    <hiria>Kirkland</hiria>
+      
+  </erregistroa>
+    
+  <erregistroa id="4">
+        
+    <izena>Margaret</izena>
+        
+    <abizena>Peacock</abizena>
+        
+    <kargua>Representante de ventas</kargua>
+        
+    <tratua>Sra.</tratua>
+        
+    <jaiotzeData>1958-09-19</jaiotzeData>
+        
+    <kontratuData>1993-05-03</kontratuData>
+        
+    <helbidea>4110 Old Redmond Rd.</helbidea>
+        
+    <hiria>Redmond</hiria>
+      
+  </erregistroa>
+    
+  <erregistroa id="5">
+        
+    <izena>Steven</izena>
+        
+    <abizena>Buchanan</abizena>
+        
+    <kargua>Gerente de ventas</kargua>
+        
+    <tratua>Sr.</tratua>
+        
+    <jaiotzeData>1955-03-04</jaiotzeData>
+        
+    <kontratuData>1993-10-17</kontratuData>
+        
+    <helbidea>14 Garrett Hill</helbidea>
+        
+    <hiria>Londres</hiria>
+      
+  </erregistroa>
+    
+  <erregistroa id="6">
+        
+    <izena>Michel</izena>
+        
+    <abizena>Suyama</abizena>
+        
+    <kargua>Representante de ventas</kargua>
+        
+    <tratua>Sr.</tratua>
+        
+    <jaiotzeData>1963-07-02</jaiotzeData>
+        
+    <kontratuData>1993-10-17</kontratuData>
+        
+    <helbidea>Coventry House</helbidea>
+        
+    <hiria>Londres</hiria>
+      
+  </erregistroa>
+    
+  <erregistroa id="7">
+        
+    <izena>Robert</izena>
+        
+    <abizena>King</abizena>
+        
+    <kargua>Representante de ventas</kargua>
+        
+    <tratua>Sr.</tratua>
+        
+    <jaiotzeData>1960-05-29</jaiotzeData>
+        
+    <kontratuData>1994-01-02</kontratuData>
+        
+    <helbidea>Edgeham Hollow</helbidea>
+        
+    <hiria>Londres</hiria>
+      
+  </erregistroa>
+    
+  <erregistroa id="8">
+        
+    <izena>Laura</izena>
+        
+    <abizena>Callahan</abizena>
+        
+    <kargua>Coordinador ventas internacionales</kargua>
+        
+    <tratua>Stra.</tratua>
+        
+    <jaiotzeData>1958-01-09</jaiotzeData>
+        
+    <kontratuData>1994-03-05</kontratuData>
+        
+    <helbidea>4726-11th Ave.N.E.</helbidea>
+        
+    <hiria>Seattle</hiria>
+      
+  </erregistroa>
+    
+
+</erregistroak>
