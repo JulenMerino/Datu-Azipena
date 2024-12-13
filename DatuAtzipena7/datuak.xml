@@ -1,328 +1,159 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Enpresas>
-        
     <empresa>
-                
         <id>1</id>
-                
         <nombre>TecnoSoluciones S.A.</nombre>
-                
         <sector>Tecnología</sector>
-                
         <numEmpleados>120</numEmpleados>
-                
         <telefono>+52 55 1234 5678</telefono>
-                
         <correo>contacto@tecnosoluciones.com</correo>
-                
         <direccion>Av. Insurgentes Sur 1234, Piso 4</direccion>
-                
         <ciudad>Ciudad de México</ciudad>
-                
         <empleados>
-                        
             <empleado>
-                                
                 <codigo>6</codigo>
-                                
                 <nombre>Michel</nombre>
-                                
                 <apellidos>Suyama</apellidos>
-                                
                 <cargo>Representante de ventas</cargo>
-                                
                 <tratamiento>Sr.</tratamiento>
-                                
                 <fechaNacimiento>1963-07-02</fechaNacimiento>
-                                
                 <fechaContratacion>1993-10-17</fechaContratacion>
-                                
                 <direccion>Coventry House</direccion>
-                                
                 <ciudad>Londres</ciudad>
-                                
                 <lanean>true</lanean>
-                            
             </empleado>
-                        
             <empleado>
-                                
                 <codigo>7</codigo>
-                                
                 <nombre>Robert</nombre>
-                                
                 <apellidos>King</apellidos>
-                                
                 <cargo>Representante de ventas</cargo>
-                                
                 <tratamiento>Sr.</tratamiento>
-                                
                 <fechaNacimiento>1960-05-29</fechaNacimiento>
-                                
                 <fechaContratacion>1994-01-02</fechaContratacion>
-                                
                 <direccion>Edgeham Hollow</direccion>
-                                
                 <ciudad>Londres</ciudad>
-                                
                 <lanean>false</lanean>
-                            
-            </empleado>
-                    
-            <empleado>
-                <codigo>10</codigo>
-                <nombre>julen</nombre>
-                <apellidos>Merino</apellidos>
-                <cargo>jefe</cargo>
-                <tratamiento>sr</tratamiento>
-                <fechaNacimiento>2002-01-11</fechaNacimiento>
-                <fechaContratacion>2010-10-10</fechaContratacion>
-                <direccion>kasa</direccion>
-                <ciudad>tolosa</ciudad>
-                <lanean>true</lanean>
             </empleado>
         </empleados>
-            
     </empresa>
-        
     <empresa>
-                
         <id>2</id>
-                
         <nombre>VerdeVida Agroindustrial</nombre>
-                
         <sector>Agricultura</sector>
-                
         <numEmpleados>80</numEmpleados>
-                
         <telefono>+57 1 9876 5432</telefono>
-                
         <correo>info@verdevida.co</correo>
-                
         <direccion>Calle 45 No. 23-56</direccion>
-                
         <ciudad>Bogotá</ciudad>
-                
         <empleados>
-                        
             <empleado>
-                                
                 <codigo>5</codigo>
-                                
                 <nombre>Steven</nombre>
-                                
                 <apellidos>Buchanan</apellidos>
-                                
                 <cargo>Gerente de ventas</cargo>
-                                
                 <tratamiento>Sr.</tratamiento>
-                                
                 <fechaNacimiento>1955-03-04</fechaNacimiento>
-                                
                 <fechaContratacion>1993-10-17</fechaContratacion>
-                                
                 <direccion>14 Garrett Hill</direccion>
-                                
                 <ciudad>Londres</ciudad>
-                                
                 <lanean>true</lanean>
-                            
             </empleado>
-                        
             <empleado>
-                                
                 <codigo>9</codigo>
-                                
                 <nombre>Anne</nombre>
-                                
                 <apellidos>Dodsworth</apellidos>
-                                
                 <cargo>Representante de ventas</cargo>
-                                
                 <tratamiento>Stra.</tratamiento>
-                                
                 <fechaNacimiento>1969-07-02</fechaNacimiento>
-                                
                 <fechaContratacion>1994-11-02</fechaContratacion>
-                                
                 <direccion>7 Houndstooth Rd.</direccion>
-                                
                 <ciudad>Londres</ciudad>
-                                
                 <lanean>true</lanean>
-                            
             </empleado>
-                    
         </empleados>
-            
     </empresa>
-        
     <empresa>
-                
         <id>3</id>
-                
         <nombre>SaludVital Clínicas</nombre>
-                
         <sector>Salud</sector>
-                
         <numEmpleados>50</numEmpleados>
-                
         <telefono>+34 910 234 567</telefono>
-                
         <correo>contacto@saludvital.es</correo>
-                
         <direccion>Calle Mayor 89, Planta 2</direccion>
-                
         <ciudad>Madrid</ciudad>
-                
         <empleados>
-                        
             <empleado>
-                                
                 <codigo>2</codigo>
-                                
                 <nombre>Andrew</nombre>
-                                
                 <apellidos>Fuller</apellidos>
-                                
                 <cargo>Vicepresidente comercial</cargo>
-                                
                 <tratamiento>Dr.</tratamiento>
-                                
                 <fechaNacimiento>1952-02-19</fechaNacimiento>
-                                
                 <fechaContratacion>1992-08-14</fechaContratacion>
-                                
                 <direccion>908 W. Capital Way</direccion>
-                                
                 <ciudad>Tacoma</ciudad>
-                                
                 <lanean>true</lanean>
-                            
             </empleado>
-                        
             <empleado>
-                                
                 <codigo>3</codigo>
-                                
                 <nombre>Janet</nombre>
-                                
                 <apellidos>Leverling</apellidos>
-                                
                 <cargo>Representante de ventas</cargo>
-                                
                 <tratamiento>Stra.</tratamiento>
-                                
                 <fechaNacimiento>1963-08-30</fechaNacimiento>
-                                
                 <fechaContratacion>1992-04-01</fechaContratacion>
-                                
                 <direccion>722 Moss Bay Blvd.</direccion>
-                                
                 <ciudad>Kirkland</ciudad>
-                                
                 <lanean>true</lanean>
-                            
             </empleado>
-                    
         </empleados>
-            
     </empresa>
-        
     <empresa>
-                
         <id>4</id>
-                
         <nombre>Logística Global Express</nombre>
-                
         <sector>Transporte y Logística</sector>
-                
         <numEmpleados>150</numEmpleados>
-                
         <telefono>+1 212 345 6789</telefono>
-                
         <correo>support@globalexpress.com</correo>
-                
         <direccion>456 7th Avenue</direccion>
-                
         <ciudad>Nueva York</ciudad>
-                
         <empleados>
-                        
             <empleado>
-                                
                 <codigo>1</codigo>
-                                
                 <nombre>Nancy</nombre>
-                                
                 <apellidos>Davolio</apellidos>
-                                
                 <cargo>Representante de ventas</cargo>
-                                
                 <tratamiento>Stra.</tratamiento>
-                                
                 <fechaNacimiento>1968-12-08</fechaNacimiento>
-                                
                 <fechaContratacion>1992-05-01</fechaContratacion>
-                                
                 <direccion>507-20th Ave.E.</direccion>
-                                
                 <ciudad>Seattle</ciudad>
-                                
                 <lanean>true</lanean>
-                            
             </empleado>
-                        
             <empleado>
-                                
                 <codigo>4</codigo>
-                                
                 <nombre>Margaret</nombre>
-                                
                 <apellidos>Peacock</apellidos>
-                                
                 <cargo>Representante de ventas</cargo>
-                                
                 <tratamiento>Sra.</tratamiento>
-                                
                 <fechaNacimiento>1958-09-19</fechaNacimiento>
-                                
                 <fechaContratacion>1993-05-03</fechaContratacion>
-                                
                 <direccion>4110 Old Redmond Rd.</direccion>
-                                
                 <ciudad>Redmond</ciudad>
-                                
                 <lanean>false</lanean>
-                            
             </empleado>
-                        
             <empleado>
-                                
                 <codigo>8</codigo>
-                                
                 <nombre>Laura</nombre>
-                                
                 <apellidos>Callahan</apellidos>
-                                
                 <cargo>Coordinador ventas internacionales</cargo>
-                                
                 <tratamiento>Stra.</tratamiento>
-                                
                 <fechaNacimiento>1958-01-09</fechaNacimiento>
-                                
                 <fechaContratacion>1994-03-05</fechaContratacion>
-                                
                 <direccion>4726-11th Ave.N.E.</direccion>
-                                
                 <ciudad>Seattle</ciudad>
-                                
                 <lanean>true</lanean>
-                            
             </empleado>
-                    
         </empleados>
-            
     </empresa>
-    
 </Enpresas>
