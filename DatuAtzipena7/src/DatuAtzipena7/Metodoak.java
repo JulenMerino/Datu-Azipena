@@ -262,7 +262,7 @@ public class Metodoak {
 
                         if (langileaNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element langileaElement = (Element) langileaNode;
-                            String Kodea = langileaElement.getElementsByTagName("codigo").item(0).getTextContent();
+                            String Kodea = langileaElement.getElementsByTagName("Kodea").item(0).getTextContent();
 
                             if (Kodea.equals(kodeaBilatu)) {
                                 aurkituta = true;
@@ -324,7 +324,7 @@ public class Metodoak {
             NodeList enpresak = document.getElementsByTagName("Enpresa");
             boolean aurkituta = false;
 
-            System.out.println("\n" + hitza + "\" duten langileak \"" + atributua + "\" sekzioan:");
+            System.out.println(hitza + " " + atributua + "duten langileak");
             System.out.printf("%-10s %-20s %-20s %-40s %-10s %-20s %-20s %-20s %-20s\n",
                     "Kodea", "Izena", "Abizena", "Kargua", "Tratua", "Jaiotze Data", "Kontatazio Data", "Helbidea", "Hiria");
             System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -396,7 +396,7 @@ public class Metodoak {
 
             List<Element> langileakList = new ArrayList<>();
 
-            NodeList enpresak = document.getElementsByTagName("empresa");
+            NodeList enpresak = document.getElementsByTagName("Enpresa");
             for (int i = 0; i < enpresak.getLength(); i++) {
                 Node epresaNode = enpresak.item(i);
                 if (epresaNode.getNodeType() == Node.ELEMENT_NODE) {
