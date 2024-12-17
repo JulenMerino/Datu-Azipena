@@ -3,7 +3,6 @@ package DatuAtzipena7;
 import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.io.*;
 import javax.xml.parsers.*;
@@ -13,309 +12,232 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.time.format.DateTimeFormatter;
 
+
 public class Metodoak {
 
+    /**
+     * Enpresen zerrenda bat jasotzen du eta XML fitxategi batean gordetzen du.
+     * 
+     * @param enpresak Enpresen zerrenda bat.
+     * @param dirHelbidea Fitxategiaren helmuga direktorioaren helbidea.
+     * @throws Exception XML fitxategia sortzeko edo idazteko arazoak sor daitezke.
+     */
+    public void sortuEnpresenXMLa(List<Enpresa> enpresak, String dirHelbidea) throws Exception {
+        DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+        Document document = documentBuilder.newDocument();
 
-	public void generarXMLConEmpresas(List<Enpresa> enpresas) throws Exception {
+        Element root = document.createElement("Enpresak");
+        document.appendChild(root);
 
-		DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
-		Document document = documentBuilder.newDocument();
+        for (Enpresa enpresa : enpresak) {
+            sortuEnpresaElement(document, root, enpresa);
+        }
 
+        File outputFile = new File(dirHelbidea, "datuak.xml");
+        saveXMLToFile(document, outputFile.getAbsolutePath());
+    }
 
-		Element root = document.createElement("Enpresas");
-		document.appendChild(root);
-
-
-		for (Enpresa enpresa : enpresas) {
-			createEmpresaElement(document, root, enpresa);
-		}
-
-
-		saveXMLToFile(document, "datuak.xml");  
-	}
-
-
-
-	public void mostrarDesdeXML(String filename) {
-		try {
-			// Crear un DocumentBuilder para leer el archivo XML
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new File(filename));
-
-			// Normalizar el documento (opcional, pero recomendado)
-			document.getDocumentElement().normalize();
-
-			// Obtener todas las empresas (nodos <empresa>)
-			NodeList empresaNodes = document.getElementsByTagName("empresa");
-			for (int i = 0; i < empresaNodes.getLength(); i++) {
-				Node empresaNode = empresaNodes.item(i);
-				if (empresaNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element empresaElement = (Element) empresaNode;
-
-					// Extraer información de la empresa
-					System.out.println("Empresa ID: " + empresaElement.getElementsByTagName("id").item(0).getTextContent());
-					System.out.println("Nombre: " + empresaElement.getElementsByTagName("nombre").item(0).getTextContent());
-					System.out.println("Sector: " + empresaElement.getElementsByTagName("sector").item(0).getTextContent());
-					System.out.println("Número de Empleados: " + empresaElement.getElementsByTagName("numEmpleados").item(0).getTextContent());
-					System.out.println("Teléfono: " + empresaElement.getElementsByTagName("telefono").item(0).getTextContent());
-					System.out.println("Correo: " + empresaElement.getElementsByTagName("correo").item(0).getTextContent());
-					System.out.println("Dirección: " + empresaElement.getElementsByTagName("direccion").item(0).getTextContent());
-					System.out.println("Ciudad: " + empresaElement.getElementsByTagName("ciudad").item(0).getTextContent());
-					System.out.println("\nEmpleados:");
-
-					// Obtener todos los empleados de la empresa
-					NodeList empleadoNodes = empresaElement.getElementsByTagName("empleado");
-					for (int j = 0; j < empleadoNodes.getLength(); j++) {
-						Node empleadoNode = empleadoNodes.item(j);
-						if (empleadoNode.getNodeType() == Node.ELEMENT_NODE) {
-							Element empleadoElement = (Element) empleadoNode;
-
-							// Extraer información de cada empleado
-							System.out.println("  Empleado Código: " + empleadoElement.getElementsByTagName("codigo").item(0).getTextContent());
-							System.out.println("  Nombre: " + empleadoElement.getElementsByTagName("nombre").item(0).getTextContent());
-							System.out.println("  Apellidos: " + empleadoElement.getElementsByTagName("apellidos").item(0).getTextContent());
-							System.out.println("  Cargo: " + empleadoElement.getElementsByTagName("cargo").item(0).getTextContent());
-							System.out.println("  Tratamiento: " + empleadoElement.getElementsByTagName("tratamiento").item(0).getTextContent());
-							System.out.println("  Fecha de Nacimiento: " + empleadoElement.getElementsByTagName("fechaNacimiento").item(0).getTextContent());
-							System.out.println("  Fecha de Contratación: " + empleadoElement.getElementsByTagName("fechaContratacion").item(0).getTextContent());
-							System.out.println("  Dirección: " + empleadoElement.getElementsByTagName("direccion").item(0).getTextContent());
-							System.out.println("  Ciudad: " + empleadoElement.getElementsByTagName("ciudad").item(0).getTextContent());
-							System.out.println("  Actualmente trabajando: " + empleadoElement.getElementsByTagName("lanean").item(0).getTextContent());
-							System.out.println();
-						}
-					}
-
-					// Separar empresas con un espacio
-					System.out.println("----------------------------------------------------\n");
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error al leer el archivo XML.");
-		}
-	}
-
-
-	public void añadirRegistroN(String filename) {
-		try {
-			Scanner scanner = new Scanner(System.in);
-
-			// Solicitar ID de la empresa
-			System.out.print("Ingrese el ID de la empresa: ");
-			String empresaId = scanner.nextLine();
-
-			// Solicitar datos del nuevo empleado
-			System.out.print("Ingrese el código del empleado: ");
-			String codigo = scanner.nextLine();
-			System.out.print("Ingrese el nombre del empleado: ");
-			String nombre = scanner.nextLine();
-			System.out.print("Ingrese los apellidos del empleado: ");
-			String apellidos = scanner.nextLine();
-			System.out.print("Ingrese el cargo del empleado: ");
-			String cargo = scanner.nextLine();
-			System.out.print("Ingrese el tratamiento del empleado: ");
-			String tratamiento = scanner.nextLine();
-			System.out.print("Ingrese la fecha de nacimiento del empleado (YYYY-MM-DD): ");
-			String fechaNacimiento = scanner.nextLine();
-			System.out.print("Ingrese la fecha de contratación del empleado (YYYY-MM-DD): ");
-			String fechaContratacion = scanner.nextLine();
-			System.out.print("Ingrese la dirección del empleado: ");
-			String direccion = scanner.nextLine();
-			System.out.print("Ingrese la ciudad del empleado: ");
-			String ciudad = scanner.nextLine();
-			System.out.print("¿Actualmente trabajando? (true/false): ");
-			String lanean = scanner.nextLine();
-
-			// Cargar el archivo XML existente
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new File(filename));
-
-			// Normalizar el documento (opcional)
-			document.getDocumentElement().normalize();
-
-			// Buscar la empresa correspondiente
-			NodeList empresas = document.getElementsByTagName("empresa");
-			boolean empresaEncontrada = false;
-
-			for (int i = 0; i < empresas.getLength(); i++) {
-				Node empresaNode = empresas.item(i);
-				if (empresaNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element empresaElement = (Element) empresaNode;
-					String id = empresaElement.getElementsByTagName("id").item(0).getTextContent();
-
-					if (id.equals(empresaId)) {
-						empresaEncontrada = true;
-
-						// Crear el nuevo nodo <empleado>
-						Element nuevoEmpleado = document.createElement("empleado");
-
-						Element codigoElem = document.createElement("codigo");
-						codigoElem.setTextContent(codigo);
-						nuevoEmpleado.appendChild(codigoElem);
-
-						Element nombreElem = document.createElement("nombre");
-						nombreElem.setTextContent(nombre);
-						nuevoEmpleado.appendChild(nombreElem);
-
-						Element apellidosElem = document.createElement("apellidos");
-						apellidosElem.setTextContent(apellidos);
-						nuevoEmpleado.appendChild(apellidosElem);
-
-						Element cargoElem = document.createElement("cargo");
-						cargoElem.setTextContent(cargo);
-						nuevoEmpleado.appendChild(cargoElem);
-
-						Element tratamientoElem = document.createElement("tratamiento");
-						tratamientoElem.setTextContent(tratamiento);
-						nuevoEmpleado.appendChild(tratamientoElem);
-
-						Element fechaNacimientoElem = document.createElement("fechaNacimiento");
-						fechaNacimientoElem.setTextContent(fechaNacimiento);
-						nuevoEmpleado.appendChild(fechaNacimientoElem);
-
-						Element fechaContratacionElem = document.createElement("fechaContratacion");
-						fechaContratacionElem.setTextContent(fechaContratacion);
-						nuevoEmpleado.appendChild(fechaContratacionElem);
-
-						Element direccionElem = document.createElement("direccion");
-						direccionElem.setTextContent(direccion);
-						nuevoEmpleado.appendChild(direccionElem);
-
-						Element ciudadElem = document.createElement("ciudad");
-						ciudadElem.setTextContent(ciudad);
-						nuevoEmpleado.appendChild(ciudadElem);
-
-						Element laneanElem = document.createElement("lanean");
-						laneanElem.setTextContent(lanean);
-						nuevoEmpleado.appendChild(laneanElem);
-
-						// Añadir el nuevo empleado al nodo <empleados>
-						NodeList empleadosList = empresaElement.getElementsByTagName("empleados");
-						if (empleadosList.getLength() > 0) {
-							empleadosList.item(0).appendChild(nuevoEmpleado);
-						} else {
-							// Si no existe el nodo <empleados>, crearlo y añadir el empleado
-							Element empleados = document.createElement("empleados");
-							empleados.appendChild(nuevoEmpleado);
-							empresaElement.appendChild(empleados);
-						}
-
-						break;
-					}
-				}
-			}
-
-			if (!empresaEncontrada) {
-				System.out.println("Empresa con ID " + empresaId + " no encontrada.");
-				return;
-			}
-
-			// Guardar los cambios en el archivo XML
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			DOMSource source = new DOMSource(document);
-			StreamResult result = new StreamResult(new File(filename));
-			transformer.transform(source, result);
-
-			System.out.println("Empleado añadido exitosamente a la empresa con ID " + empresaId + ".");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error al añadir el registro.");
-		}
-	}
-
-
-	public void buscarRegistroPorCodigo(String filename) {
-		try {
-			Scanner scanner = new Scanner(System.in);
-
-			// Solicitar el código del registro a buscar
-			System.out.print("Ingrese el código del registro a buscar: ");
-			String codigoBuscado = scanner.nextLine();
-
-			// Cargar el archivo XML
-			File file = new File(filename);
-			if (!file.exists()) {
-				System.out.println("El archivo " + filename + " no existe.");
-				return;
-			}
-
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(file);
-
-			document.getDocumentElement().normalize();
-
-			// Buscar en todos los empleados de las empresas
-			NodeList empresas = document.getElementsByTagName("empresa");
-			boolean encontrado = false;
-
-			for (int i = 0; i < empresas.getLength(); i++) {
-				Node empresaNode = empresas.item(i);
-
-				if (empresaNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element empresaElement = (Element) empresaNode;
-					NodeList empleados = empresaElement.getElementsByTagName("empleado");
-
-					for (int j = 0; j < empleados.getLength(); j++) {
-						Node empleadoNode = empleados.item(j);
-
-						if (empleadoNode.getNodeType() == Node.ELEMENT_NODE) {
-							Element empleadoElement = (Element) empleadoNode;
-							String codigo = empleadoElement.getElementsByTagName("codigo").item(0).getTextContent();
-
-							if (codigo.equals(codigoBuscado)) {
-								encontrado = true;
-								System.out.println("Registro encontrado:");
-								System.out.println("Código: " + codigo);
-								System.out.println("Nombre: " + empleadoElement.getElementsByTagName("nombre").item(0).getTextContent());
-								System.out.println("Apellidos: " + empleadoElement.getElementsByTagName("apellidos").item(0).getTextContent());
-								System.out.println("Cargo: " + empleadoElement.getElementsByTagName("cargo").item(0).getTextContent());
-								System.out.println("Tratamiento: " + empleadoElement.getElementsByTagName("tratamiento").item(0).getTextContent());
-								System.out.println("Fecha de nacimiento: " + empleadoElement.getElementsByTagName("fechaNacimiento").item(0).getTextContent());
-								System.out.println("Fecha de contratación: " + empleadoElement.getElementsByTagName("fechaContratacion").item(0).getTextContent());
-								System.out.println("Dirección: " + empleadoElement.getElementsByTagName("direccion").item(0).getTextContent());
-								System.out.println("Ciudad: " + empleadoElement.getElementsByTagName("ciudad").item(0).getTextContent());
-								System.out.println("Trabajando actualmente: " + empleadoElement.getElementsByTagName("lanean").item(0).getTextContent());
-								break;
-							}
-						}
-					}
-
-					if (encontrado) break;
-				}
-			}
-
-			if (!encontrado) {
-				System.out.println("No se encontró ningún registro con el código " + codigoBuscado + ".");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error al buscar el registro.");
-		}
-	}
-	
-	
-	public void buscarRegistrosPorPalabra(String filename) {
+    /**
+     * XML fitxategi bat irakurtzen du eta kontsolan erakusten ditu enpresen eta langileen datuak.
+     * 
+     * @param filename XML fitxategiaren izena.
+     */
+    public void XMLaErabilizErakutsi(String filename) {
         try {
-            Scanner scanner = new Scanner(System.in);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(new File(filename));
 
-            // Solicitar la palabra a buscar
-            System.out.print("Ingrese la palabra a buscar: ");
-            String palabraBuscada = scanner.nextLine();
+            document.getDocumentElement().normalize();
 
-            // Solicitar el nombre del campo donde buscar
-            System.out.print("Ingrese el campo donde buscar (ejemplo: nombre, cargo, ciudad, etc.): ");
-            String campo = scanner.nextLine();
+            NodeList enpresaNodeak = document.getElementsByTagName("Enpresa");
+            for (int i = 0; i < enpresaNodeak.getLength(); i++) {
+                Node enpresaNode = enpresaNodeak.item(i);
+                if (enpresaNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element enpresaElement = (Element) enpresaNode;
 
-            // Cargar el archivo XML
+                    System.out.println("Enpresa Kodea: " + enpresaElement.getElementsByTagName("Kodea").item(0).getTextContent());
+                    System.out.println("Izena: " + enpresaElement.getElementsByTagName("Izena").item(0).getTextContent());
+                    System.out.println("Sektorea: " + enpresaElement.getElementsByTagName("Sektorea").item(0).getTextContent());
+                    System.out.println("Langile kopurua: " + enpresaElement.getElementsByTagName("PerKop").item(0).getTextContent());
+                    System.out.println("Telefonoa: " + enpresaElement.getElementsByTagName("Telefonoa").item(0).getTextContent());
+                    System.out.println("Korreoa: " + enpresaElement.getElementsByTagName("Korreoa").item(0).getTextContent());
+                    System.out.println("Helbidea: " + enpresaElement.getElementsByTagName("Helbidea").item(0).getTextContent());
+                    System.out.println("Hiria: " + enpresaElement.getElementsByTagName("Hiria").item(0).getTextContent());
+                    System.out.println("\nEmpleados:");
+
+                    NodeList langileaNodeak = enpresaElement.getElementsByTagName("Langilea");
+                    for (int j = 0; j < langileaNodeak.getLength(); j++) {
+                        Node langileakNode = langileaNodeak.item(j);
+                        if (langileakNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element langileaElement = (Element) langileakNode;
+
+                            System.out.println("  Langile Kodea: " + langileaElement.getElementsByTagName("Kodea").item(0).getTextContent());
+                            System.out.println("  Izena: " + langileaElement.getElementsByTagName("Izena").item(0).getTextContent());
+                            System.out.println("  Abizena: " + langileaElement.getElementsByTagName("Abizena").item(0).getTextContent());
+                            System.out.println("  Kargua: " + langileaElement.getElementsByTagName("Kargua").item(0).getTextContent());
+                            System.out.println("  Tratua: " + langileaElement.getElementsByTagName("Tratua").item(0).getTextContent());
+                            System.out.println("  Jaiotze data: " + langileaElement.getElementsByTagName("JaiotzeData").item(0).getTextContent());
+                            System.out.println("  Kontratazio data: " + langileaElement.getElementsByTagName("KontratazioData").item(0).getTextContent());
+                            System.out.println("  Helbidea: " + langileaElement.getElementsByTagName("Helbidea").item(0).getTextContent());
+                            System.out.println("  Hiria: " + langileaElement.getElementsByTagName("Hiria").item(0).getTextContent());
+                            System.out.println("  Lanenan: " + langileaElement.getElementsByTagName("Lanean").item(0).getTextContent());
+                            System.out.println();
+                        }
+                    }
+
+                    System.out.println("----------------------------------------------------\n");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al leer el archivo XML.");
+        }
+    }
+
+    /**
+     * Langile berri bat enpresara gehitzen du, XML fitxategian gordetzen dena.
+     * 
+     * @param filename XML fitxategiaren izena.
+     */
+    public void SortuLangilea(String filename) {
+        try {
+            Scanner sc = new Scanner(System.in);
+
+            System.out.print("Zer enpresatan sortu nahi duzu??(sartu kodea): ");
+            String enpresaId = sc.nextLine();
+
+            System.out.print("Sartu langilearen kodea: ");
+            String kodea = sc.nextLine();
+            System.out.print("Sartu langilearen izena: ");
+            String izena = sc.nextLine();
+            System.out.print("Sartu langilearen abizena: ");
+            String abizena = sc.nextLine();
+            System.out.print("Sartu langilearen kargua: ");
+            String kargua = sc.nextLine();
+            System.out.print("Sartu langilearen tratua: ");
+            String tratua = sc.nextLine();
+            System.out.print("Sartu langilearen jaiotze data (YYYY-MM-DD): ");
+            String jaiotzeData = sc.nextLine();
+            System.out.print("Sartu langilearen kontatazio data (YYYY-MM-DD): ");
+            String kontratazioData = sc.nextLine();
+            System.out.print("Sartu langilearen helbidea: ");
+            String helbidea = sc.nextLine();
+            System.out.print("Sartu langilearen hiria: ");
+            String hiria = sc.nextLine();
+            System.out.print("Lanean dago? (true/false): ");
+            String lanean = sc.nextLine();
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(new File(filename));
+
+            document.getDocumentElement().normalize();
+
+            NodeList enpresak = document.getElementsByTagName("Enpresa");
+            boolean enpresaAurkituta = false;
+
+            for (int i = 0; i < enpresak.getLength(); i++) {
+                Node enpresaNode = enpresak.item(i);
+                if (enpresaNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element enpresaElement = (Element) enpresaNode;
+                    String Kodea = enpresaElement.getElementsByTagName("Kodea").item(0).getTextContent();
+
+                    if (Kodea.equals(enpresaId)) {
+                        enpresaAurkituta = true;
+
+                        Element langileBerria = document.createElement("Langilea");
+
+                        Element kodeaElement = document.createElement("Kodea");
+                        kodeaElement.setTextContent(kodea);
+                        langileBerria.appendChild(kodeaElement);
+
+                        Element izenaElement = document.createElement("Izena");
+                        izenaElement.setTextContent(izena);
+                        langileBerria.appendChild(izenaElement);
+
+                        Element abizenaElement = document.createElement("Abizena");
+                        abizenaElement.setTextContent(abizena);
+                        langileBerria.appendChild(abizenaElement);
+
+                        Element karguaElement = document.createElement("Kargua");
+                        karguaElement.setTextContent(kargua);
+                        langileBerria.appendChild(karguaElement);
+
+                        Element traruaElement = document.createElement("Tratua");
+                        traruaElement.setTextContent(tratua);
+                        langileBerria.appendChild(traruaElement);
+
+                        Element jaiotzeDataElement = document.createElement("JaiotzeData");
+                        jaiotzeDataElement.setTextContent(jaiotzeData);
+                        langileBerria.appendChild(jaiotzeDataElement);
+
+                        Element kontratazioDataElement = document.createElement("KontratazioData");
+                        kontratazioDataElement.setTextContent(kontratazioData);
+                        langileBerria.appendChild(kontratazioDataElement);
+
+                        Element helbideaElement = document.createElement("Helbidea");
+                        helbideaElement.setTextContent(helbidea);
+                        langileBerria.appendChild(helbideaElement);
+
+                        Element hiriaElement = document.createElement("Hiria");
+                        hiriaElement.setTextContent(hiria);
+                        langileBerria.appendChild(hiriaElement);
+
+                        Element laneanElement = document.createElement("Lanean");
+                        laneanElement.setTextContent(lanean);
+                        langileBerria.appendChild(laneanElement);
+
+                        NodeList langileakList = enpresaElement.getElementsByTagName("Enpresak");
+                        if (langileakList.getLength() > 0) {
+                            langileakList.item(0).appendChild(langileBerria);
+                        } else {
+                            Element langileak = document.createElement("Lagileak");
+                            langileak.appendChild(langileBerria);
+                            enpresaElement.appendChild(langileak);
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            if (!enpresaAurkituta) {
+                System.out.println(enpresaId + " duen enpresa ez da aurkitu edo ez da existitzen");
+                return;
+            }
+
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            DOMSource source = new DOMSource(document);
+            StreamResult result = new StreamResult(new File(filename));
+            transformer.transform(source, result);
+
+            System.out.println("Langilea sortuta " + enpresaId + " enpresan");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Errorea erregistroa sortzerakoan.");
+        }
+    }
+
+
+    /**
+     * XML fitxategian bilatzen den langilea bere kodea erabiliz bilatzen du.
+     * @param filename XML fitxategiaren izena.
+     */
+    public void bilatuLangileaKodeBidez(String filename) {
+        try {
+            Scanner sc = new Scanner(System.in);
+
+            System.out.print("Sartu bilatu nahi de langilea: ");
+            String kodeaBilatu = sc.nextLine();
+
             File file = new File(filename);
             if (!file.exists()) {
-                System.out.println("El archivo " + filename + " no existe.");
+                System.out.println(filename + " helbidean ez dago fitxategirik izen horrekin");
                 return;
             }
 
@@ -325,49 +247,119 @@ public class Metodoak {
 
             document.getDocumentElement().normalize();
 
-            // Buscar en todos los empleados de las empresas
-            NodeList empresas = document.getElementsByTagName("empresa");
-            boolean encontrado = false;
+            NodeList enpresak = document.getElementsByTagName("Enpresa");
+            boolean aurkituta = false;
 
-            System.out.println("\nRegistros encontrados que contienen \"" + palabraBuscada + "\" en el campo \"" + campo + "\":");
+            for (int i = 0; i < enpresak.getLength(); i++) {
+                Node enpresaNode = enpresak.item(i);
+
+                if (enpresaNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element enpresaElement = (Element) enpresaNode;
+                    NodeList langileak = enpresaElement.getElementsByTagName("Langilea");
+
+                    for (int j = 0; j < langileak.getLength(); j++) {
+                        Node langileaNode = langileak.item(j);
+
+                        if (langileaNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element langileaElement = (Element) langileaNode;
+                            String Kodea = langileaElement.getElementsByTagName("codigo").item(0).getTextContent();
+
+                            if (Kodea.equals(kodeaBilatu)) {
+                                aurkituta = true;
+                                System.out.println("Langilea bilatuta:");
+                                System.out.println("Kodea: " + Kodea);
+                                System.out.println("Izena: " + langileaElement.getElementsByTagName("Izena").item(0).getTextContent());
+                                System.out.println("Abizena: " + langileaElement.getElementsByTagName("Abizena").item(0).getTextContent());
+                                System.out.println("Kargua: " + langileaElement.getElementsByTagName("Kargua").item(0).getTextContent());
+                                System.out.println("Tratua: " + langileaElement.getElementsByTagName("Tratua").item(0).getTextContent());
+                                System.out.println("Jaiotze data: " + langileaElement.getElementsByTagName("JaiotzeData").item(0).getTextContent());
+                                System.out.println("Kontratazio data: " + langileaElement.getElementsByTagName("KontratazioData").item(0).getTextContent());
+                                System.out.println("Helbidea: " + langileaElement.getElementsByTagName("Helbidea").item(0).getTextContent());
+                                System.out.println("Hiria: " + langileaElement.getElementsByTagName("Hiria").item(0).getTextContent());
+                                System.out.println("Lanean: " + langileaElement.getElementsByTagName("Lanean").item(0).getTextContent());
+                                break;
+                            }
+                        }
+                    }
+
+                    if (aurkituta) break;
+                }
+            }
+
+            if (!aurkituta) {
+                System.out.println("Ez da langilerik bilatu " + kodeaBilatu + " kodearekin");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Errorea langilea bilatzean.");
+        }
+    }
+
+    /**
+     * XML fitxategian hitz baten bidez langileak bilatzen ditu.
+     * @param filename XML fitxategiaren izena.
+     */
+    public void bilatuLangileaHitzBatenBidez(String filename) {
+        try {
+            Scanner sc = new Scanner(System.in);
+
+            System.out.print("Sartu bilatu nahi den hitza: ");
+            String hitza = sc.nextLine();
+
+            System.out.print("Zer sekzioan bilatu nahi duzu(izena, abizena, kargua, tratua, jaiotzeData, kontratazioData, helbidea, hira): ");
+            String atributua = sc.nextLine();
+
+            File file = new File(filename);
+            if (!file.exists()) {
+                System.out.println(filename + " helbidean ez dago fitxategirik izen horrekin");
+                return;
+            }
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(file);
+
+            document.getDocumentElement().normalize();
+
+            NodeList enpresak = document.getElementsByTagName("Enpresa");
+            boolean aurkituta = false;
+
+            System.out.println("\n" + hitza + "\" duten langileak \"" + atributua + "\" sekzioan:");
             System.out.printf("%-10s %-20s %-20s %-40s %-10s %-20s %-20s %-20s %-20s\n",
-                    "Código", "Nombre", "Apellidos", "Cargo", "Trato", "Fecha Nacimiento", "Fecha Contratación", "Dirección", "Ciudad");
+                    "Kodea", "Izena", "Abizena", "Kargua", "Tratua", "Jaiotze Data", "Kontatazio Data", "Helbidea", "Hiria");
             System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
-            for (int i = 0; i < empresas.getLength(); i++) {
-                Node empresaNode = empresas.item(i);
+            for (int i = 0; i < enpresak.getLength(); i++) {
+                Node enpresaNode = enpresak.item(i);
 
-                if (empresaNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element empresaElement = (Element) empresaNode;
-                    NodeList empleados = empresaElement.getElementsByTagName("empleado");
+                if (enpresaNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element enpresaElement = (Element) enpresaNode;
+                    NodeList langileak = enpresaElement.getElementsByTagName("Langilea");
 
-                    for (int j = 0; j < empleados.getLength(); j++) {
-                        Node empleadoNode = empleados.item(j);
+                    for (int j = 0; j < langileak.getLength(); j++) {
+                        Node langileaNode = langileak.item(j);
 
-                        if (empleadoNode.getNodeType() == Node.ELEMENT_NODE) {
-                            Element empleadoElement = (Element) empleadoNode;
+                        if (langileaNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element langileaElement = (Element) langileaNode;
 
-                            // Verificar si el campo contiene la palabra buscada
-                            NodeList campoNodes = empleadoElement.getElementsByTagName(campo);
-                            if (campoNodes.getLength() > 0) {
-                                String valorCampo = campoNodes.item(0).getTextContent();
-                                if (valorCampo.contains(palabraBuscada)) {
-                                    encontrado = true;
+                            NodeList sekzioaNode = langileaElement.getElementsByTagName(atributua);
+                            if (sekzioaNode.getLength() > 0) {
+                                String hitzaAtributu = sekzioaNode.item(0).getTextContent();
+                                if (hitzaAtributu.contains(hitza)) {
+                                    aurkituta = true;
 
-                                    // Obtener y mostrar los datos del empleado
-                                    String codigo = empleadoElement.getElementsByTagName("codigo").item(0).getTextContent();
-                                    String nombre = empleadoElement.getElementsByTagName("nombre").item(0).getTextContent();
-                                    String apellidos = empleadoElement.getElementsByTagName("apellidos").item(0).getTextContent();
-                                    String cargo = empleadoElement.getElementsByTagName("cargo").item(0).getTextContent();
-                                    String trato = empleadoElement.getElementsByTagName("tratamiento").item(0).getTextContent();
-                                    String fechaNacimiento = empleadoElement.getElementsByTagName("fechaNacimiento").item(0).getTextContent();
-                                    String fechaContratacion = empleadoElement.getElementsByTagName("fechaContratacion").item(0).getTextContent();
-                                    String direccion = empleadoElement.getElementsByTagName("direccion").item(0).getTextContent();
-                                    String ciudad = empleadoElement.getElementsByTagName("ciudad").item(0).getTextContent();
+                                    String kodea = langileaElement.getElementsByTagName("Kodea").item(0).getTextContent();
+                                    String izena = langileaElement.getElementsByTagName("Izena").item(0).getTextContent();
+                                    String abizena = langileaElement.getElementsByTagName("Abizena").item(0).getTextContent();
+                                    String kargua = langileaElement.getElementsByTagName("Kargua").item(0).getTextContent();
+                                    String tratua = langileaElement.getElementsByTagName("Tratua").item(0).getTextContent();
+                                    String jaiotzeData = langileaElement.getElementsByTagName("JaiotzeData").item(0).getTextContent();
+                                    String kontratazioData = langileaElement.getElementsByTagName("KontratazioData").item(0).getTextContent();
+                                    String helbidea = langileaElement.getElementsByTagName("Helbidea").item(0).getTextContent();
+                                    String hiria = langileaElement.getElementsByTagName("Hiria").item(0).getTextContent();
 
-                                    // Imprimir los datos del empleado en formato tabular
                                     System.out.printf("%-10s %-20s %-20s %-40s %-10s %-20s %-20s %-20s %-20s\n", 
-                                            codigo, nombre, apellidos, cargo, trato, fechaNacimiento, fechaContratacion, direccion, ciudad);
+                                            kodea, izena, abizena, kargua, tratua, jaiotzeData, kontratazioData, helbidea, hiria);
                                 }
                             }
                         }
@@ -375,138 +367,147 @@ public class Metodoak {
                 }
             }
 
-            if (!encontrado) {
-                System.out.println("No se encontraron registros que contengan \"" + palabraBuscada + "\" en el campo \"" + campo + "\".");
+            if (!aurkituta) {
+                System.out.println(atributua + " ez dugu aurkitu langilerik " + hitza + " hitza duena");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error al buscar los registros.");
+            System.out.println("Errorea langilea bilatzean");
         }
     }
-	
-	public void ordenarPorAtributo(String filename) {
+
+    /**
+     * XML fitxategian langileak atributu baten arabera ordenatzen ditu.
+     * @param filename XML fitxategiaren izena.
+     */
+    public void ordenarPorAtributo(String filename) {
         try {
-            Scanner scanner = new Scanner(System.in);
+            Scanner sc = new Scanner(System.in);
 
-            // Solicitar al usuario el atributo por el cual ordenar
-            System.out.println("Seleccione el atributo para ordenar a los empleados:");
-            System.out.println("Opciones: nombre, apellidos, cargo, ciudad, codigo");
-            String atributo = scanner.nextLine();
+            System.out.println("Aukeratu zer atributuren arabera ordenatu nahi duzu:");
+            System.out.println("Aukerak: Izena, Abizena, Kargua, Hiria, Kodea");
+            String atributua = sc.nextLine();
 
-            // Crear un DocumentBuilder para leer el archivo XML
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new File(filename));
 
-            // Normalizar el documento (opcional, pero recomendado)
             document.getDocumentElement().normalize();
 
-            // Crear una lista para almacenar empleados
-            List<Element> empleadosList = new ArrayList<>();
+            List<Element> langileakList = new ArrayList<>();
 
-            // Obtener todas las empresas (nodos <empresa>)
-            NodeList empresaNodes = document.getElementsByTagName("empresa");
-            for (int i = 0; i < empresaNodes.getLength(); i++) {
-                Node empresaNode = empresaNodes.item(i);
-                if (empresaNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element empresaElement = (Element) empresaNode;
+            NodeList enpresak = document.getElementsByTagName("empresa");
+            for (int i = 0; i < enpresak.getLength(); i++) {
+                Node epresaNode = enpresak.item(i);
+                if (epresaNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element empresaElement = (Element) epresaNode;
 
-                    // Obtener todos los empleados de la empresa
-                    NodeList empleadoNodes = empresaElement.getElementsByTagName("empleado");
-                    for (int j = 0; j < empleadoNodes.getLength(); j++) {
-                        Node empleadoNode = empleadoNodes.item(j);
-                        if (empleadoNode.getNodeType() == Node.ELEMENT_NODE) {
-                            empleadosList.add((Element) empleadoNode);
+                    NodeList langileak = empresaElement.getElementsByTagName("Langilea");
+                    for (int j = 0; j < langileak.getLength(); j++) {
+                        Node langileaNode = langileak.item(j);
+                        if (langileaNode.getNodeType() == Node.ELEMENT_NODE) {
+                            langileakList.add((Element) langileaNode);
                         }
                     }
                 }
             }
 
-            // Ordenar la lista de empleados según el atributo especificado
-            empleadosList.sort(Comparator.comparing(empleado -> {
-                String valor = empleado.getElementsByTagName(atributo).item(0).getTextContent();
-                return (valor != null) ? valor : ""; // Manejar valores nulos
+            langileakList.sort(Comparator.comparing(empleado -> {
+                String balioa = empleado.getElementsByTagName(atributua).item(0).getTextContent();
+                return (balioa != null) ? balioa : ""; 
             }));
 
-            // Mostrar los empleados ordenados
-            System.out.println("Empleados ordenados por " + atributo + ":");
+            System.out.println("Langileak ordenatuta " + atributua + " arabera:");
             System.out.printf("%-10s %-20s %-20s %-40s %-10s %-20s %-20s %-20s %-20s\n",
-                    "Código", "Nombre", "Apellidos", "Cargo", "Trato", "Fecha Nacimiento", "Fecha Contratación", "Dirección", "Ciudad");
+                    "Kodea", "Izena", "Abizena", "Kargua", "Tratua", "Jaiotze Data", "Kontratazio Data", "Helbidea", "Hiria");
             System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-            for (Element empleado : empleadosList) {
-                // Obtener los datos de cada empleado
-                String codigo = empleado.getElementsByTagName("codigo").item(0).getTextContent();
-                String nombre = empleado.getElementsByTagName("nombre").item(0).getTextContent();
-                String apellidos = empleado.getElementsByTagName("apellidos").item(0).getTextContent();
-                String cargo = empleado.getElementsByTagName("cargo").item(0).getTextContent();
-                String trato = empleado.getElementsByTagName("tratamiento").item(0).getTextContent();
-                String fechaNacimiento = empleado.getElementsByTagName("fechaNacimiento").item(0).getTextContent();
-                String fechaContratacion = empleado.getElementsByTagName("fechaContratacion").item(0).getTextContent();
-                String direccion = empleado.getElementsByTagName("direccion").item(0).getTextContent();
-                String ciudad = empleado.getElementsByTagName("ciudad").item(0).getTextContent();
+            for (Element langilea : langileakList) {
+                String kodea = langilea.getElementsByTagName("Kodea").item(0).getTextContent();
+                String izena = langilea.getElementsByTagName("Izena").item(0).getTextContent();
+                String abizena = langilea.getElementsByTagName("Abizena").item(0).getTextContent();
+                String kargua = langilea.getElementsByTagName("Kargua").item(0).getTextContent();
+                String tratua = langilea.getElementsByTagName("Tratua").item(0).getTextContent();
+                String jaiotzeData = langilea.getElementsByTagName("JaiotzeData").item(0).getTextContent();
+                String kontratazioData = langilea.getElementsByTagName("KontratazioData").item(0).getTextContent();
+                String helbidea = langilea.getElementsByTagName("Helbidea").item(0).getTextContent();
+                String hiria = langilea.getElementsByTagName("Hiria").item(0).getTextContent();
 
-                // Imprimir los datos del empleado en formato tabular
                 System.out.printf("%-10s %-20s %-20s %-40s %-10s %-20s %-20s %-20s %-20s\n",
-                        codigo, nombre, apellidos, cargo, trato, fechaNacimiento, fechaContratacion, direccion, ciudad);
+                        kodea, izena, abizena, kargua, tratua, jaiotzeData, kontratazioData, helbidea, hiria);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error al ordenar por atributo.");
+            System.out.println("Errorea artibutu bidez ordenatzean");
         }
     }
 
+    /**
+     * Enpresa elementua sortzen du XML dokumentuaren erroan.
+     * @param document XML dokumentua.
+     * @param root Erroa elementua.
+     * @param enpresa Enpresa objektua.
+     */
+    private void sortuEnpresaElement(Document document, Element root, Enpresa enpresa) {
 
+        Element enpresaElement = document.createElement("Enpresa");
+        root.appendChild(enpresaElement);
 
-	private void createEmpresaElement(Document document, Element root, Enpresa enpresa) {
+        appendChildElement(document, enpresaElement, "Kodea", String.valueOf(enpresa.getKodea()));
+        appendChildElement(document, enpresaElement, "Izena", enpresa.getIzena());
+        appendChildElement(document, enpresaElement, "Sektorea", enpresa.getSektorea());
+        appendChildElement(document, enpresaElement, "PerKop", String.valueOf(enpresa.getPertsonakop()));
+        appendChildElement(document, enpresaElement, "Telefonoa", enpresa.getTelefonoa());
+        appendChildElement(document, enpresaElement, "Korreoa", enpresa.getEmaila());
+        appendChildElement(document, enpresaElement, "Helbidea", enpresa.getHelbidea());
+        appendChildElement(document, enpresaElement, "Hiria", enpresa.getHiria());
 
-		Element empresaElement = document.createElement("empresa");
-		root.appendChild(empresaElement);
+        Element langileakElement = document.createElement("Lagileak");
+        enpresaElement.appendChild(langileakElement);
 
+        for (Langileak langile : enpresa.getLangileak()) {
+            Element langileaElement = document.createElement("Langilea");
+            langileakElement.appendChild(langileaElement);
+            appendChildElement(document, langileaElement, "Kodea", langile.getKodea());
+            appendChildElement(document, langileaElement, "Izena", langile.getIzena());
+            appendChildElement(document, langileaElement, "Abizena", langile.getAbizena());
+            appendChildElement(document, langileaElement, "Kargua", langile.getKargua());
+            appendChildElement(document, langileaElement, "Tratua", langile.getTratua());
+            appendChildElement(document, langileaElement, "JaiotzeData", langile.getJaiotzeData().format(DateTimeFormatter.ISO_LOCAL_DATE));
+            appendChildElement(document, langileaElement, "KontratazioData", langile.getKontratuData().format(DateTimeFormatter.ISO_LOCAL_DATE));
+            appendChildElement(document, langileaElement, "Helbidea", langile.getHelbidea());
+            appendChildElement(document, langileaElement, "Hiria", langile.getHiria());
+            appendChildElement(document, langileaElement, "Lanean", String.valueOf(langile.isLanean()));
+        }
+    }
 
-		appendChildElement(document, empresaElement, "id", String.valueOf(enpresa.getKodea()));
-		appendChildElement(document, empresaElement, "nombre", enpresa.getIzena());
-		appendChildElement(document, empresaElement, "sector", enpresa.getSektorea());
-		appendChildElement(document, empresaElement, "numEmpleados", String.valueOf(enpresa.getPertsonakop()));
-		appendChildElement(document, empresaElement, "telefono", enpresa.getTelefonoa());
-		appendChildElement(document, empresaElement, "correo", enpresa.getEmaila());
-		appendChildElement(document, empresaElement, "direccion", enpresa.getHelbidea());
-		appendChildElement(document, empresaElement, "ciudad", enpresa.getHiria());
+    /**
+     * XML dokumentuan elementu bat gehitzen du.
+     * @param document XML dokumentua.
+     * @param parent Guraso elementua.
+     * @param name Elementuaren izena.
+     * @param value Elementuaren balioa.
+     */
+    private void appendChildElement(Document document, Element parent, String name, String value) {
+        Element element = document.createElement(name);
+        element.appendChild(document.createTextNode(value));
+        parent.appendChild(element);
+    }
 
+    /**
+     * XML dokumentua fitxategi batean gorde egiten du.
+     * @param document XML dokumentua.
+     * @param filename Fitxategiaren izena.
+     * @throws IOException I/O errore bat gertatzen bada.
+     * @throws TransformerException Transformer errore bat gertatzen bada.
+     */
+    private void saveXMLToFile(Document document, String filename) throws IOException, TransformerException {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-		Element empleadosElement = document.createElement("empleados");
-		empresaElement.appendChild(empleadosElement);
+        DOMSource source = new DOMSource(document);
+        StreamResult result = new StreamResult(new File(filename));
 
-
-		for (Langileak langile : enpresa.getLangileak()) {
-			Element empleadoElement = document.createElement("empleado");
-			empleadosElement.appendChild(empleadoElement);
-			appendChildElement(document, empleadoElement, "codigo", langile.getKodea());
-			appendChildElement(document, empleadoElement, "nombre", langile.getIzena());
-			appendChildElement(document, empleadoElement, "apellidos", langile.getAbizena());
-			appendChildElement(document, empleadoElement, "cargo", langile.getKargua());
-			appendChildElement(document, empleadoElement, "tratamiento", langile.getTratua());
-			appendChildElement(document, empleadoElement, "fechaNacimiento", langile.getJaiotzeData().format(DateTimeFormatter.ISO_LOCAL_DATE));
-			appendChildElement(document, empleadoElement, "fechaContratacion", langile.getKontratuData().format(DateTimeFormatter.ISO_LOCAL_DATE));
-			appendChildElement(document, empleadoElement, "direccion", langile.getHelbidea());
-			appendChildElement(document, empleadoElement, "ciudad", langile.getHiria());
-			appendChildElement(document, empleadoElement, "lanean", String.valueOf(langile.isLanean()));
-		}
-	}
-
-	private void appendChildElement(Document document, Element parent, String name, String value) {
-		Element element = document.createElement(name);
-		element.appendChild(document.createTextNode(value));
-		parent.appendChild(element);
-	}
-
-	private void saveXMLToFile(Document document, String filename) throws IOException, TransformerException {
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");  
-
-		DOMSource source = new DOMSource(document);
-		StreamResult result = new StreamResult(new File(filename));
-
-		transformer.transform(source, result);
-	}
+        transformer.transform(source, result);
+    }
 }

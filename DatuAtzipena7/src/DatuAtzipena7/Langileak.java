@@ -2,6 +2,10 @@ package DatuAtzipena7;
 
 import java.time.LocalDate;
 
+/**
+ * Klase honek langilearen datuak jasotzeko eta eguneratzeko metodoak eskaintzen ditu, baita langilearen
+ * egoera lanean dagoen edo ez jakiteko ere.
+ */
 public class Langileak {
     private String kodea;
     private String abizena;
@@ -14,7 +18,20 @@ public class Langileak {
     private String hiria;
     private boolean lanean; 
 
-    // Constructor
+    /**
+     * Klaseko objektu berri bat sortzen du.
+     * 
+     * @param kodea Langilearen kodea.
+     * @param abizena Langilearen abizena.
+     * @param izena Langilearen izena.
+     * @param kargua Langilearen kargua.
+     * @param tratua Langilearen tratua (ohikoa, emakumea, etab.).
+     * @param jaiotzeData Langilearen jaiotze data.
+     * @param kontratuData Langilearen kontratu data.
+     * @param helbidea Langilearen helbidea.
+     * @param hiria Langilearen bizitoki hiria.
+     * @param lanean Langileak lan egiten duen ala ez adierazten duen balioa (true edo false).
+     */
     public Langileak(String kodea, String abizena, String izena, String kargua, String tratua,
                       LocalDate jaiotzeData, LocalDate kontratuData, String helbidea, String hiria, boolean lanean) {
         this.kodea = kodea;
@@ -29,7 +46,6 @@ public class Langileak {
         this.lanean = lanean;
     }
 
-    // Getters y Setters
     public String getKodea() {
         return kodea;
     }
@@ -110,16 +126,4 @@ public class Langileak {
         this.lanean = lanean;
     }
 
-    // Método toString
-    @Override
-    public String toString() {
-        return String.format("kodea: %s, izena: %s %s, kargua: %s, tratua: %s, Fecha Nacimiento: %s, Fecha Contratacion: %s, Dirección: %s, hiria: %s, lanean: %s",
-                kodea, izena, abizena, kargua, tratua, jaiotzeData, kontratuData, helbidea, hiria, lanean ? "Sí" : "No");
-    }
-
-    // lanean dagoen edo ez jakiteko metodoa
-    
-    public String estadolanean() {
-        return lanean ? "Langilea lanean" : "Langilea langabetua";
-    }
 }

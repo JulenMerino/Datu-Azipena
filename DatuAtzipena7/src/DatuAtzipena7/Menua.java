@@ -5,8 +5,21 @@ import java.util.Scanner;
 
 public class Menua {
 
-    
-    public void mostrarMenu(List<Enpresa> enpresas) {
+    /**
+     * Menua erakusten du eta erabiltzaileak aukeratutako ekintza exekutatzen du.
+     * Programak zazpi aukera eskaintzen ditu: 
+     * 1. Enpresa guztien informazioa XML batean sortu,
+     * 2. Enpresen informazioa XML fitxategian erakutsi,
+     * 3. Langile bat sortu eta fitxategian sartu,
+     * 4. Langilea kodea erabiliz bilatu,
+     * 5. Langilea hitz bat erabiliz bilatu,
+     * 6. Langileak atributu baten arabera zerrendatu,
+     * 7. Programatik irten.
+     * 
+     * @param enpresas Enpresa objektuen zerrenda, menuko aukerak exekutatzeko.
+     * @param dirHelbidea Fitxategien direktorioaren helbidea.
+     */
+    public void mostrarMenu(List<Enpresa> enpresas, String dirHelbidea) {
         Scanner sc = new Scanner(System.in);
         Metodoak metodoak = new Metodoak(); 
 
@@ -27,8 +40,7 @@ public class Menua {
             switch (aukera) {
                 case 1:
                     try {
-                        
-                        metodoak.generarXMLConEmpresas(enpresas);
+                        metodoak.sortuEnpresenXMLa(enpresas, dirHelbidea);
                         System.out.println(" XML fitxategia sortuta");
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -37,7 +49,7 @@ public class Menua {
                     break;
                 case 2:
                     try {
-                        metodoak.mostrarDesdeXML("datuak.xml");
+                        metodoak.XMLaErabilizErakutsi(dirHelbidea + "/datuak.xml");
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.out.println("XML fitxategia erakusterakoan errorea");
@@ -46,7 +58,7 @@ public class Menua {
                     
                 case 3:
                     try {
-                        metodoak.añadirRegistroN("datuak.xml");
+                        metodoak.SortuLangilea(dirHelbidea + "/datuak.xml");
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.out.println("XML fitxategian erregistroa sartzerakoan errora");
@@ -54,23 +66,23 @@ public class Menua {
                     break;
                 case 4:
                     try {
-                        metodoak.buscarRegistroPorCodigo("datuak.xml");
+                        metodoak.bilatuLangileaKodeBidez(dirHelbidea + "/datuak.xml");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        System.out.println("Lagilea kode bidez bilatzerakoan errorea");
+                        System.out.println("Langilea kode bidez bilatzerakoan errorea");
                     }
                     break;
                 case 5:
                     try {
-                        metodoak.buscarRegistrosPorPalabra("datuak.xml");
+                        metodoak.bilatuLangileaHitzBatenBidez(dirHelbidea + "/datuak.xml");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        System.out.println("Lagilea hitz baten bidez bilatzerakoan errorea.");
+                        System.out.println("Langilea hitz baten bidez bilatzerakoan errorea.");
                     }
                     break;   
                 case 6:
                     try {
-                        metodoak.ordenarPorAtributo("datuak.xml");
+                        metodoak.ordenarPorAtributo(dirHelbidea + "/datuak.xml");
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.out.println("Langileak zerrendatzean errorea");
