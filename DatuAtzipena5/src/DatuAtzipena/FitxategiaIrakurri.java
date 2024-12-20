@@ -29,8 +29,14 @@ public class FitxategiaIrakurri {
         Scanner sc = new Scanner(System.in);
         
         // Erabiltzaileari fitxategiaren izena eta ibilbidea sartzeko eskatzen dio
-        System.out.println("Sartu fitxategiaren izena eta ibilbidea:");
+        System.out.println("Sartu fitxategiaren izena eta ibilbidea (adibidez: /ruta/al/fitxategia):");
         String fitxategiIzenbidea = sc.nextLine();
+
+        // Egiaztatu if el nombre ya tiene la extensión .dat
+        if (!fitxategiIzenbidea.endsWith(".dat")) {
+            // Si no tiene .dat, añadirlo automáticamente
+            fitxategiIzenbidea += ".dat";
+        }
 
         // Fitxategiaren objektua sortzen da jasotako ibilbidearekin
         File fitxategia = new File(fitxategiIzenbidea);
@@ -81,4 +87,5 @@ public class FitxategiaIrakurri {
         // Fitxategia ondo sortu edo irakurri bada, fitxategiaren objektua itzultzen da
         return fitxategia;
     }
+
 }

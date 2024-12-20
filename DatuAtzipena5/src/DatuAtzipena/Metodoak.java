@@ -1,6 +1,7 @@
 package DatuAtzipena;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -43,14 +44,24 @@ public class Metodoak {
      * @param fitxategia Fitxategia betetzeko
      */
     public static void fitxategiaBete(File fitxategia) {
-        try (RandomAccessFile raf = new RandomAccessFile(fitxategia, "rw")) {
-            raf.writeBytes(VERSION + "\n"); // Aplikazioaren bertsioa idazten du
+    	try (RandomAccessFile raf = new RandomAccessFile(fitxategia, "rw")) {
+            String lehenLerroa = raf.readLine();
+            
+            // Si la primera línea no es la versión, la escribimos
+            if (lehenLerroa == null || !lehenLerroa.equals(VERSION)) {
+                raf.seek(0);
+                raf.write(VERSION.getBytes(StandardCharsets.UTF_8)); 
+                raf.write("\n".getBytes(StandardCharsets.UTF_8)); 
+            } else {
+                raf.seek(raf.length());
+            }
+
             for (int i = 0; i < kodea.length; i++) {
-                // Erregistro bakoitza formateatzen du eta fitxategian gorde
-                String record = String.format("%-5d;%-20s;%-15s;%-10s;%-15s;%-15s;%-10s;%-20s;%s;\n",
+                String registro = String.format("%-5d;%-20s;%-15s;%-10s;%-15s;%-15s;%-10s;%-20s;%s;\n",
                         kodea[i], izena[i], abizena[i], jaiotzeData[i].format(dateFormatter),
                         kargua[i], tratua[i], kontratuData[i], helbidea[i], hiria[i]);
-                raf.writeBytes(record); // Erregistroa idazten du
+                
+                raf.write(registro.getBytes(StandardCharsets.UTF_8));
             }
 
             System.out.println("Fitxategia datuekin bete da.");
@@ -78,7 +89,7 @@ public class Metodoak {
 
         if (erantzuna.equalsIgnoreCase("bai")) {
             try (PrintWriter pw = new PrintWriter(new FileWriter(fitxategia, false))) {
-                pw.println(VERSION); // Bertsioa idatzi
+                pw.println(VERSION); 
                 System.out.println("Fitxategia hutsik geratu da.");
             } catch (IOException e) {
                 System.out.println("Errorea fitxategia hutsik uztean.");
@@ -99,20 +110,18 @@ public class Metodoak {
         while (kodea < 0) {
             System.out.println("Sartu bilatu nahi duzun erregistroaren kodea:");
             if (sc.hasNextInt()) {
-                kodea = sc.nextInt(); // Kodea eskatzen du
+                kodea = sc.nextInt(); 
             } else {
                 sc.next();
                 System.out.println("Sartu zenbaki positibo bat.");
             }
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fitxategia))) {
+        try (RandomAccessFile raf = new RandomAccessFile(fitxategia, "r")) {
             String lerroa;
-            int lerroKonta = 0;
             boolean aurkitua = false;
-            while ((lerroa = br.readLine()) != null) {
-                lerroKonta++;
-                if (lerroKonta > 1 && lerroa.startsWith(String.valueOf(kodea))) {
+            while ((lerroa = raf.readLine()) != null) {
+                if (lerroa.startsWith(String.valueOf(kodea))) {
                     System.out.println("Erregistroa aurkitu da: " + lerroa);
                     aurkitua = true;
                     break;
@@ -138,12 +147,10 @@ public class Metodoak {
 
         try (BufferedReader br = new BufferedReader(new FileReader(fitxategia))) {
             String lerroa;
-            int lerroKonta = 0;
             boolean aurkitua = false;
             while ((lerroa = br.readLine()) != null) {
-                lerroKonta++;
                 if (lerroa.contains(testua)) {
-                    System.out.println("Erregistroa aurkitu da (lerroa " + lerroKonta + "): " + lerroa);
+                    System.out.println("Erregistroa aurkitu da: " + lerroa);
                     aurkitua = true;
                 }
             }
@@ -165,48 +172,39 @@ public class Metodoak {
     public static void erregistroaEzabatu(File fitxategia) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Sartu ezabatu nahi duzun erregistroaren kodea:");
-        String kodeaEzabatu = sc.nextLine().trim(); // Erregistroaren kodea irakurtzen du
+        String kodeaEzabatu = sc.nextLine().trim(); 
 
         boolean found = false;
         try (RandomAccessFile raf = new RandomAccessFile(fitxategia, "rw")) {
 
-            // Hasierako lerroa saltatu
             raf.readLine();
 
-            // Erregistroa bilatu eta ezabatu
             long posicionInicial = raf.getFilePointer();
             String line;
             while ((line = raf.readLine()) != null) {
 
                 String[] fields = line.split(";");
-                if (fields.length >= 9) { // Zure kodeak nahikoa zela ziurtatzeko
+                if (fields.length >= 9) { 
                     String codigo = fields[0].trim();
 
                     // Kodea bilatzen du
                     if (codigo.equals(kodeaEzabatu)) {
 
-                        // Erregistro logikoa ezabatzea (kodea negatibo bihurtzen da)
                         String registroBorrado = String.format(
                             "%-5s;%-20s;%-15s;%-10s;%-15s;%-15s;%-10s;%-20s;%s;",
-                            "-" + kodeaEzabatu, // Kodeari '-' aurreztu
+                            "-" + kodeaEzabatu, 
                             fields[1], fields[2], fields[3], fields[4], fields[5], fields[6], fields[7], fields[8]
                         );
-
-                        // Egon behar duen luzera berdina izan dadin ziurtatzen du
                         if (registroBorrado.length() < line.length()) {
                             registroBorrado += " ".repeat(line.length() - registroBorrado.length());
                         }
-
-                        // Erregistroa fitxategian idazten du
-                        raf.seek(posicionInicial); // Hasierara itzuli
+                        raf.seek(posicionInicial); 
                         raf.writeBytes(registroBorrado);
                         found = true;
                         System.out.println("Erregistroa logikoki ezabatuta.");
                         break;
                     }
                 }
-
-                // Hurrengo erregistroaren kokapena eguneratzen du
                 posicionInicial = raf.getFilePointer();
             }
 
@@ -229,8 +227,7 @@ public class Metodoak {
     public static void ezbatutakoaErakutsi(File fitxategia) {
 
         try (RandomAccessFile raf = new RandomAccessFile(fitxategia, "r")) {
-
-            // Hasierako lerroa saltatu
+        	
             raf.readLine();
             boolean found = false;
 
@@ -242,8 +239,7 @@ public class Metodoak {
 
                 if (fields.length >= 9) {
                     String kodea = fields[0].trim();
-
-                    // Kodeak '-' hasten bada, erregistroa logikoki ezabatuta dago
+                    
                     if (kodea.startsWith("-")) {
                         String izena = fields[1].trim();
                         String abizena = fields[2].trim();
@@ -284,28 +280,9 @@ public class Metodoak {
      * @param fitxategia Erregistroa gehituko den fitxategia
      */
     public static void erregistroaGehitu(File fitxategia) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(fitxategia, true))) {
+        try (FileOutputStream fos = new FileOutputStream(fitxategia, true)) {
             String erregistroa = sartuErregistroa(fitxategia);
-
-            // Kodeak dagoeneko existitzen duen egiaztatu eta logikoki ezabatutako erregistroekin
-            String[] campos = erregistroa.split(";");
-            int codigoNuevo = -1;
-
-            try {
-                // Kodea zenbakira bihurtzeko saiakera
-                codigoNuevo = Integer.parseInt(campos[0].trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Erregistroaren kodea baliogabea da: " + campos[0]);
-                return;
-            }
-
-            // Kodea negatiboa bada, ez da erregistro berririk gehitu
-            if (codigoNuevo < 0) {
-                System.out.println("Ez da posible ezabatutako kodearekin erregistro bat gehitzea.");
-                return;
-            }
-
-            pw.println(erregistroa);
+            fos.write(erregistroa.getBytes(StandardCharsets.UTF_8));
             System.out.println("Erregistroa gehitu da.");
         } catch (IOException e) {
             System.out.println("Errorea erregistroa gehitzean.");
@@ -323,17 +300,16 @@ public class Metodoak {
         Scanner sc = new Scanner(System.in);
         int kodea = -1;
 
-        // Erregistroaren kodea aldatu nahi dena eskatu
         while (kodea < 0) {
             System.out.println("Sartu aldatu nahi duzun erregistroaren kodea:");
             if (sc.hasNextInt()) {
                 kodea = sc.nextInt();
             } else {
-                sc.next(); // Sarrera baliogabea kontsumitzen du
+                sc.next(); 
                 System.out.println("Sartu zenbaki positibo bat.");
             }
         }
-        sc.nextLine(); // nextInt-ren ondoren lerro saltoa kontsumitzen du
+        sc.nextLine(); 
 
         File irakurritakoFitxategia = new File("temp.txt");
         try (BufferedReader br = new BufferedReader(new FileReader(fitxategia));
@@ -343,21 +319,19 @@ public class Metodoak {
             boolean aurkitua = false;
             while ((lerroa = br.readLine()) != null) {
                 if (lerroa.startsWith(String.valueOf(kodea))) {
-                    // Erregistroa ezabatuta dagoen ala ez egiaztatu
                     if (lerroa.startsWith("-")) {
                         System.out.println("Ez da posible aldatu ezabatutako erregistroa.");
-                        pw.println(lerroa); // Erregistroa aldatu gabe berridatzi
-                        continue; // Aldaketa pasa
+                        pw.println(lerroa); 
+                        continue; 
                     }
 
                     System.out.println("Aurkitutako erregistroa: " + lerroa);
 
-                    // Erregistro berria sartzeko funtzioa deitzen du
-                    String nuevoRegistro = sartuErregistroa(fitxategia);
-                    pw.println(nuevoRegistro); // Erregistro berria fitxategian idazten du
+                    String erregitroBerria = sartuErregistroa(fitxategia);
+                    pw.println(erregitroBerria); 
                     aurkitua = true;
                 } else {
-                    pw.println(lerroa); // Erregistroa aldatu gabe idazten du
+                    pw.println(lerroa); 
                 }
             }
 
@@ -368,7 +342,6 @@ public class Metodoak {
             System.out.println("Errorea fitxategia irakurtzean edo idaztean.");
         }
 
-        // Fitxategi jatorrizkoa ordezkatzen du
         if (!fitxategia.delete()) {
             System.out.println("Errorea fitxategia ezabatu zenean.");
             return;
@@ -393,7 +366,7 @@ public class Metodoak {
         // Kodea egiaztatu, jadanik existitzen ez dela
         Set<Integer> existitzenKodeak = new HashSet<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fitxategia))) {
-            br.readLine(); // Hasierako lerroa saltatu
+            br.readLine();
             String lerroa;
             while ((lerroa = br.readLine()) != null) {
                 String[] erregistroak = lerroa.split(";");
@@ -403,22 +376,21 @@ public class Metodoak {
             System.out.println("Errorea fitxategia irakurtzean.");
         }
 
-        // Kodea eskaera berria egiten du eta badagoen kode bat den ala ez egiaztatzen
         while (kodea < 0) {
             System.out.print("Sartu erregistroaren kodea (zenbaki positiboa): ");
             if (sc.hasNextInt()) {
                 kodea = sc.nextInt();
                 while (existitzenKodeak.contains(kodea)) {
                     System.out.println("Kodea existitzen da. Sartu beste bat.");
-                    kodea = sc.nextInt(); // Beste kode bat eskatzen du
+                    kodea = sc.nextInt(); 
                 }
             } else {
                 sc.next();
                 System.out.println("Kodea zenbaki positiboa izan behar da.");
             }
         }
-        sc.nextLine(); // Kontsumitzen du lerro saltoa
-
+        sc.nextLine();
+        
         // Beste xehetasun batzuk eskatzen ditu
         System.out.print("Sartu izena: ");
         String izena = sc.nextLine();
@@ -437,7 +409,7 @@ public class Metodoak {
         System.out.print("Sartu hiria: ");
         String hiria = sc.nextLine();
 
-        // Erregistroa formatatzen du
+
         return String.format("%-5d;%-20s;%-15s;%-10s;%-15s;%-15s;%-10s;%-20s;%s;", kodea, izena, abizena, jaiotzeData,
                 kargua, tratua, kontratuData, helbidea, hiria);
     }
