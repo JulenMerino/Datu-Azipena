@@ -6,37 +6,37 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/2ag3.julemeri/git/repository/DatuAtzipena9/Drives para datu base java/Access/UCanAccess-5.0.1.bin/lib/commons-lang3-3.8.1.jar">
+	<classpathentry kind="lib" path="Drives para datu base java/MySQL/mysql-connector-j-9.1.0/mysql-connector-j-9.1.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/2ag3.julemeri/git/repository/DatuAtzipena9/Drives para datu base java/Access/UCanAccess-5.0.1.bin/lib/commons-logging-1.2.jar">
+	<classpathentry kind="lib" path="Drives para datu base java/Access/UCanAccess-5.0.1.bin/lib/commons-lang3-3.8.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/2ag3.julemeri/git/repository/DatuAtzipena9/Drives para datu base java/Access/UCanAccess-5.0.1.bin/lib/hsqldb-2.5.0.jar">
+	<classpathentry kind="lib" path="Drives para datu base java/Access/UCanAccess-5.0.1.bin/lib/commons-logging-1.2.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/2ag3.julemeri/git/repository/DatuAtzipena9/Drives para datu base java/Access/UCanAccess-5.0.1.bin/lib/jackcess-3.0.1.jar">
+	<classpathentry kind="lib" path="Drives para datu base java/Access/UCanAccess-5.0.1.bin/lib/hsqldb-2.5.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/2ag3.julemeri/git/repository/DatuAtzipena9/Drives para datu base java/Access/UCanAccess-5.0.1.bin/ucanaccess-5.0.1.jar">
+	<classpathentry kind="lib" path="Drives para datu base java/Access/UCanAccess-5.0.1.bin/lib/jackcess-3.0.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/2ag3.julemeri/git/repository/DatuAtzipena9/Drives para datu base java/MySQL/mysql-connector-j-9.1.0/mysql-connector-j-9.1.0.jar">
+	<classpathentry kind="lib" path="Drives para datu base java/Access/UCanAccess-5.0.1.bin/ucanaccess-5.0.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/2ag3.julemeri/git/repository/DatuAtzipena9/Drives para datu base java/SQLite/sqlite-jdbc-3.47.1.0.jar">
+	<classpathentry kind="lib" path="Drives para datu base java/SQLite/sqlite-jdbc-3.47.1.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
